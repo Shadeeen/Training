@@ -18,9 +18,26 @@ public class SecurityFilter2 implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
         String path = httpRequest.getRequestURI();
-        if (path.startsWith("/public")) {
-            //no any security checks
+        if (!path.startsWith("/public")&&!path.startsWith("/basic")&&!path.startsWith("/signup")) {
+
+            String authHeader = httpRequest.getHeader("Authorization");
+
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.getWriter().write("Missing Authorization header");
+                return;
+            }
+
+            String token = authHeader.substring(7);
+
+            if (!JwtUtil.validateToken(token)) {
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.getWriter().write("Invalid token");
+                return;
+            }
+
         }
+
         filterChain.doFilter(httpRequest, httpResponse);
 
     }

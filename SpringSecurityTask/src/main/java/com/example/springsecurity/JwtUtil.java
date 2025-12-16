@@ -8,15 +8,17 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 
+
 public class JwtUtil {
 
-    private static final String SECRET = "SecretKeyForJwt";
-    private static final long ACCESS_TOKEN_EXPIRATION_MS = 15 * 60 * 1000;
+    private static final String SECRET = "SecretKeyForJwtttttttttttttttttttttttttttttttttttt";
+    private static final long ACCESS_TOKEN_EXPIRATION_MS = 5 * 60 * 1000;
     private static final long REFRESH_TOKEN_EXPIRATION_MS = 7 * 24 * 60 * 60 * 1000L;
 
     private static Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
+
 
     public static String generateAccessToken(String username) {
 
@@ -45,7 +47,6 @@ public class JwtUtil {
     }
 
     public static boolean validateToken(String token) {
-
         try {
             Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
